@@ -50,7 +50,7 @@ public class EnemyManager : MonoBehaviour
         {
             Cell cellBelow = gridContainer.flowField.getCellFromWorldPos(enemy.obj.transform.position);
             Vector3 flowDirection = new Vector3(cellBelow.bestDirection.Vector.x, cellBelow.bestDirection.Vector.y);
-            Rigidbody2D enemyRb = enemy.enemyRb; //calling getcomponent a lot, very expensive..
+            Rigidbody2D enemyRb = enemy.enemyRb; 
             enemyRb.linearVelocity = flowDirection.normalized * 2f;
         }
 

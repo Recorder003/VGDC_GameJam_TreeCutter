@@ -13,7 +13,7 @@ public class FlowField
 
     public float cellDiameter;
     public Cell destinationCell;
-    public NativeArray<BoxcastCommand> commands = new NativeArray<BoxcastCommand>(1, Allocator.TempJob);
+    
     QueryParameters qp = QueryParameters.Default;
     
 
@@ -42,14 +42,26 @@ public class FlowField
     public void CreateCostField()
     {
 
+        foreach (Cell cell in cells)
+        {
+            cell.cost = 1; // default terrain cost
+
+            cell.bestCost = ushort.MaxValue;
+        }
+
+        //layers not getting recognized..
+
         Vector3 cellHalf = Vector3.one * cellRadius;
         int terrainLayer = LayerMask.GetMask("Terrain", "Obstacle");
+        int totalCells = gridSize.x * gridSize.y;
+        NativeArray<BoxcastCommand> commands = new NativeArray<BoxcastCommand>(totalCells, Allocator.TempJob);
+        int i = 0;
         foreach (Cell cell in cells)
         {
             qp.layerMask = terrainLayer;
-            commands[0] = new BoxcastCommand(cell.worldPos, cellHalf, Quaternion.identity, Vector3.down, qp, 0f);
+            commands[i] = new BoxcastCommand(cell.worldPos, cellHalf, Quaternion.identity, Vector3.down, qp, 0f);
 
-
+            i++;
 
             //Collider2D hit = Physics2D.OverlapBox(cell.worldPos, cellHalf, 0, terrainLayer);
             //if (hit != null)
@@ -68,15 +80,18 @@ public class FlowField
 
         }
 
-        var results = new NativeArray<RaycastHit>(1, Allocator.TempJob);
-        var handle = BoxcastCommand.ScheduleBatch(commands, results, 1, 9999, default);
+        var results = new NativeArray<RaycastHit>(totalCells, Allocator.TempJob);
+        var handle = BoxcastCommand.ScheduleBatch(commands, results, 20, 9999, default);
 
         handle.Complete();
 
         foreach (RaycastHit hit in results)
         {
+            
             if (!hit.collider)
                 continue;
+            Debug.Log("I hit soemthing");
+            Debug.Log("Hit " + hit.collider.gameObject.name + " on layer " + LayerMask.LayerToName(hit.collider.gameObject.layer));
             switch (hit.collider.gameObject.layer)
             {
                 case 8: // Obstacle
@@ -182,8 +197,8 @@ public class FlowField
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.FloorToInt((gridSize.x) * percentX);
-        int y = Mathf.FloorToInt((gridSize.y) * percentY);
+        int x = Mathf.Clamp(Mathf.FloorToInt((gridSize.x) * percentX), 0, gridSize.x - 1);
+        int y = Mathf.Clamp(Mathf.FloorToInt((gridSize.y) * percentY), 0, gridSize.y - 1);
 
         return cells[x, y];
 

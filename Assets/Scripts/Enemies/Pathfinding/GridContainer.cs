@@ -9,6 +9,12 @@ public class GridContainer : MonoBehaviour
     public bool displayGrid;
     public bool followingPlayer = true;
 
+
+    private void Start()
+    {
+        InitField();
+    }
+
     private void InitField()
     {
         flowField = new FlowField(cellRadius, gridSize);

@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c209bb97368287c488a4e28fae1ea782, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 7, y: 5}
+  gridSize: {x: 20, y: 20}
   cellRadius: 0.47
   displayGrid: 1
   followingPlayer: 1
