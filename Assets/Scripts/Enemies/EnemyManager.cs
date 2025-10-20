@@ -10,11 +10,24 @@ public class EnemyManager : MonoBehaviour
     public GameObject enemyPrefab;
     public int UnitsPerSpawn = 2;
 
-    private List<GameObject> enemiesSpawned;
+    private List<EnemyObj> enemiesSpawned;
 
-    private void Awake()
+    class EnemyObj
     {
-        enemiesSpawned = new List<GameObject>();   
+        public EnemyBase enemyBase;
+        public GameObject obj;
+        public Rigidbody2D enemyRb;
+        public EnemyObj(GameObject enemy)
+        {
+            enemyBase = enemy.GetComponent<EnemyBase>();
+            enemyRb = enemy.GetComponent<Rigidbody2D>();
+            obj = enemy;
+        }
+    }
+
+        private void Awake()
+    {
+        enemiesSpawned = new List<EnemyObj>();   
     }
 
     // Update is called once per frame
@@ -33,11 +46,11 @@ public class EnemyManager : MonoBehaviour
         if (gridContainer.flowField == null)
             return;
 
-        foreach (GameObject enemy in enemiesSpawned)
+        foreach (EnemyObj enemy in enemiesSpawned)
         {
-            Cell cellBelow = gridContainer.flowField.getCellFromWorldPos(enemy.transform.position);
+            Cell cellBelow = gridContainer.flowField.getCellFromWorldPos(enemy.obj.transform.position);
             Vector3 flowDirection = new Vector3(cellBelow.bestDirection.Vector.x, cellBelow.bestDirection.Vector.y);
-            Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>(); //calling getcomponent a lot, very expensive..
+            Rigidbody2D enemyRb = enemy.enemyRb; //calling getcomponent a lot, very expensive..
             enemyRb.linearVelocity = flowDirection.normalized * 2f;
         }
 
@@ -49,7 +62,7 @@ public class EnemyManager : MonoBehaviour
         float cellRadius = gridContainer.cellRadius;
         GameObject enemyInstance = Instantiate(enemyPrefab);
         enemyInstance.transform.parent = transform;
-        enemiesSpawned.Add(enemyInstance);
+        enemiesSpawned.Add(new EnemyObj(enemyInstance));
         enemyInstance.transform.position = new Vector3(0, 0, 0);
     }
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
+using UnityEngine.TerrainUtils;
 
 public class FlowField
 {
@@ -11,6 +13,9 @@ public class FlowField
 
     public float cellDiameter;
     public Cell destinationCell;
+    public NativeArray<BoxcastCommand> commands = new NativeArray<BoxcastCommand>(1, Allocator.TempJob);
+    QueryParameters qp = QueryParameters.Default;
+    
 
     public FlowField(float _cellSize, Vector2Int _gridSize)
     {
@@ -36,26 +41,56 @@ public class FlowField
 
     public void CreateCostField()
     {
+
         Vector3 cellHalf = Vector3.one * cellRadius;
         int terrainLayer = LayerMask.GetMask("Terrain", "Obstacle");
         foreach (Cell cell in cells)
         {
-            Collider2D hit = Physics2D.OverlapBox(cell.worldPos, cellHalf, 0, terrainLayer);
-            if (hit != null)
-            {
-                Console.Write("Hit " + hit.gameObject.name + " on layer " + LayerMask.LayerToName(hit.gameObject.layer));
-                switch (hit.gameObject.layer)
-                {
-                    case 8: // Obstacle
-                        cell.increaseCost(int.MaxValue);
-                        break;
-                    case 6: // Terrain
-                        cell.increaseCost(0);
-                        break;
-                }
-            }
+            qp.layerMask = terrainLayer;
+            commands[0] = new BoxcastCommand(cell.worldPos, cellHalf, Quaternion.identity, Vector3.down, qp, 0f);
+
+
+
+            //Collider2D hit = Physics2D.OverlapBox(cell.worldPos, cellHalf, 0, terrainLayer);
+            //if (hit != null)
+            //{
+            //    Console.Write("Hit " + hit.gameObject.name + " on layer " + LayerMask.LayerToName(hit.gameObject.layer));
+            //    switch (hit.gameObject.layer)
+            //    {
+            //        case 8: // Obstacle
+            //            cell.increaseCost(int.MaxValue);
+            //            break;
+            //        case 6: // Terrain
+            //            cell.increaseCost(0);
+            //            break;
+            //    }
+            //}
 
         }
+
+        var results = new NativeArray<RaycastHit>(1, Allocator.TempJob);
+        var handle = BoxcastCommand.ScheduleBatch(commands, results, 1, 9999, default);
+
+        handle.Complete();
+
+        foreach (RaycastHit hit in results)
+        {
+            if (!hit.collider)
+                continue;
+            switch (hit.collider.gameObject.layer)
+            {
+                case 8: // Obstacle
+                    getCellFromWorldPos(hit.point).increaseCost(int.MaxValue);
+                    break;
+                case 6: // Terrain
+                    getCellFromWorldPos(hit.point).increaseCost(0);
+                    break;
+            }
+        }
+
+        results.Dispose();
+        commands.Dispose();
+
 
     }
 
