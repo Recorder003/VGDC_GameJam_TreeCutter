@@ -13,6 +13,21 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 moveDir;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static PlayerMovement Instance { get; private set; }
+
+    private void Awake()
+    {
+        //set this to instance
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
