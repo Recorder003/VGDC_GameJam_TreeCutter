@@ -11,6 +11,7 @@ public class FlowField
     public Vector2Int gridSize;
     public float cellRadius;
 
+    public Vector3 gridOrigin = Vector3.zero;
     public float cellDiameter;
     public Cell destinationCell;
     public NativeArray<BoxcastCommand> commands = new NativeArray<BoxcastCommand>(1, Allocator.TempJob);
@@ -39,57 +40,84 @@ public class FlowField
         }
     }
 
+    public void CreateGridOnPlayer()
+    {
+        Vector3 playerPos = PlayerMovement.Instance.transform.position;
+        gridOrigin = new Vector3(
+            playerPos.x - (gridSize.x * cellDiameter) / 2f,
+            playerPos.y - (gridSize.y * cellDiameter) / 2f,
+            0
+        );
+
+        cells = new Cell[gridSize.x, gridSize.y];
+
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                Vector3 worldPosition = gridOrigin + new Vector3(
+                    x * cellDiameter + cellRadius,
+                    y * cellDiameter + cellRadius,
+                    0
+                );
+                cells[x, y] = new Cell(worldPosition, new Vector2Int(x, y));
+            }
+        }
+    }
+
     public void CreateCostField()
     {
 
+        Debug.Log("Creating cost");
+
         Vector3 cellHalf = Vector3.one * cellRadius;
-        int terrainLayer = LayerMask.GetMask("Terrain", "Obstacle");
+        int terrainLayer = LayerMask.GetMask("Obstacle");
         foreach (Cell cell in cells)
         {
-            qp.layerMask = terrainLayer;
-            commands[0] = new BoxcastCommand(cell.worldPos, cellHalf, Quaternion.identity, Vector3.down, qp, 0f);
+            //qp.layerMask = terrainLayer;
+            //commands[0] = new BoxcastCommand(cell.worldPos, cellHalf, Quaternion.identity, Vector3.down, qp, 0f);
 
 
 
-            //Collider2D hit = Physics2D.OverlapBox(cell.worldPos, cellHalf, 0, terrainLayer);
-            //if (hit != null)
-            //{
-            //    Console.Write("Hit " + hit.gameObject.name + " on layer " + LayerMask.LayerToName(hit.gameObject.layer));
-            //    switch (hit.gameObject.layer)
-            //    {
-            //        case 8: // Obstacle
-            //            cell.increaseCost(int.MaxValue);
-            //            break;
-            //        case 6: // Terrain
-            //            cell.increaseCost(0);
-            //            break;
-            //    }
-            //}
-
-        }
-
-        var results = new NativeArray<RaycastHit>(1, Allocator.TempJob);
-        var handle = BoxcastCommand.ScheduleBatch(commands, results, 1, 9999, default);
-
-        handle.Complete();
-
-        foreach (RaycastHit hit in results)
-        {
-            if (!hit.collider)
-                continue;
-            switch (hit.collider.gameObject.layer)
+            Collider2D hit = Physics2D.OverlapBox(cell.worldPos, cellHalf, 0, terrainLayer);
+            if (hit != null)
             {
-                case 8: // Obstacle
-                    getCellFromWorldPos(hit.point).increaseCost(int.MaxValue);
-                    break;
-                case 6: // Terrain
-                    getCellFromWorldPos(hit.point).increaseCost(0);
-                    break;
+                //Debug.Log("Hit " + hit.gameObject.name + " on layer " + LayerMask.LayerToName(hit.gameObject.layer));
+                switch (hit.gameObject.layer)
+                {
+                    case 8: // Obstacle
+                        cell.increaseCost(int.MaxValue);
+                        break;
+                    case 6: // Terrain
+                        cell.increaseCost(0);
+                        break;
+                }
             }
+
         }
 
-        results.Dispose();
-        commands.Dispose();
+        //var results = new NativeArray<RaycastHit>(1, Allocator.TempJob);
+        //var handle = BoxcastCommand.ScheduleBatch(commands, results, 1, 9999, default);
+
+        //handle.Complete();
+
+        //foreach (RaycastHit hit in results)
+        //{
+        //    if (!hit.collider)
+        //        continue;
+        //    switch (hit.collider.gameObject.layer)
+        //    {
+        //        case 8: // Obstacle
+        //            getCellFromWorldPos(hit.point).increaseCost(int.MaxValue);
+        //            break;
+        //        case 6: // Terrain
+        //            getCellFromWorldPos(hit.point).increaseCost(0);
+        //            break;
+        //    }
+        //}
+
+        //results.Dispose();
+        //commands.Dispose();
 
 
     }
@@ -112,7 +140,15 @@ public class FlowField
             foreach (Cell neighbor in cellNeighbors)
             {
                 if (neighbor.cost == int.MaxValue)
-                    continue;
+                {
+                    var myCells = GetNeighborCells(neighbor.gridIndex, GridDirection.AllDirections);
+
+                    for (int i = 0; i < myCells.Count; i++)
+                    {
+                        myCells[i].increaseCost(5);
+                    }
+                }
+                    
                 if (neighbor.cost + curCell.bestCost < neighbor.bestCost)
                 {
                     neighbor.bestCost = (ushort)(neighbor.cost + curCell.bestCost);
@@ -176,17 +212,19 @@ public class FlowField
 
     public Cell getCellFromWorldPos(Vector3 worldPos)
     {
-        float percentX = worldPos.x / (gridSize.x * cellDiameter);
-        float percentY = worldPos.y / (gridSize.y * cellDiameter);
+        // Offset by grid origin
+        Vector3 localPos = worldPos - gridOrigin;
+
+        float percentX = localPos.x / (gridSize.x * cellDiameter);
+        float percentY = localPos.y / (gridSize.y * cellDiameter);
 
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.FloorToInt((gridSize.x) * percentX);
-        int y = Mathf.FloorToInt((gridSize.y) * percentY);
+        int x = Mathf.Clamp(Mathf.FloorToInt(gridSize.x * percentX), 0, gridSize.x - 1);
+        int y = Mathf.Clamp(Mathf.FloorToInt(gridSize.y * percentY), 0, gridSize.y - 1);
 
         return cells[x, y];
-
     }
 
 
