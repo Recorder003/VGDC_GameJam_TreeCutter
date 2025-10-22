@@ -455,6 +455,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1367763228}
   - component: {fileID: 1367763227}
+  - component: {fileID: 1367763229}
+  - component: {fileID: 1367763230}
   m_Layer: 0
   m_Name: Map Controller
   m_TagString: Untagged
@@ -502,6 +504,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1367763229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367763226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c209bb97368287c488a4e28fae1ea782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSize: {x: 0, y: 0}
+  cellRadius: 0.5
+  displayGrid: 1
+  followingPlayer: 1
+  centerOnPlayer: 1
+--- !u!114 &1367763230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367763226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a975dfc9cd00f4288ad32ba0b3b778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridContainer: {fileID: 1367763229}
+  enemyPrefab: {fileID: 350879251537021207, guid: 34344e7e0e21f424bb2674120ebb1d26, type: 3}
+  UnitsPerSpawn: 2
 --- !u!1 &1962459082
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,7 +605,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
