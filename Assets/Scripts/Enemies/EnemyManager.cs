@@ -6,6 +6,8 @@ public class EnemyManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    public bool debug = true;
+
     public GridContainer gridContainer;
     public GameObject enemyPrefab;
     public int UnitsPerSpawn = 2;
@@ -34,10 +36,14 @@ public class EnemyManager : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (debug)
         {
-            SpawnEnemies();
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                SpawnEnemies();
+            }
         }
+
 
     }
 
@@ -51,7 +57,7 @@ public class EnemyManager : MonoBehaviour
             Cell cellBelow = gridContainer.flowField.getCellFromWorldPos(enemy.obj.transform.position);
             Vector3 flowDirection = new Vector3(cellBelow.bestDirection.Vector.x, cellBelow.bestDirection.Vector.y);
             Rigidbody2D enemyRb = enemy.enemyRb; //calling getcomponent a lot, very expensive..
-            enemyRb.linearVelocity = flowDirection.normalized * 2f;
+            enemyRb.linearVelocity = flowDirection.normalized * enemy.enemyBase.speed;
         }
 
     }
