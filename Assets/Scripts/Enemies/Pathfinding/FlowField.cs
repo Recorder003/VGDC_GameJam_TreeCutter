@@ -14,7 +14,7 @@ public class FlowField
     public Vector3 gridOrigin = Vector3.zero;
     public float cellDiameter;
     public Cell destinationCell;
-    public NativeArray<BoxcastCommand> commands = new NativeArray<BoxcastCommand>(1, Allocator.TempJob);
+    //public NativeArray<BoxcastCommand> commands = new NativeArray<BoxcastCommand>(1, Allocator.TempJob); //causes leak if uncommented
     QueryParameters qp = QueryParameters.Default;
     
 
@@ -140,15 +140,7 @@ public class FlowField
             foreach (Cell neighbor in cellNeighbors)
             {
                 if (neighbor.cost == int.MaxValue)
-                {
-                    var myCells = GetNeighborCells(neighbor.gridIndex, GridDirection.AllDirections);
-
-                    for (int i = 0; i < myCells.Count; i++)
-                    {
-                        myCells[i].increaseCost(5);
-                    }
-                }
-                    
+                    continue;
                 if (neighbor.cost + curCell.bestCost < neighbor.bestCost)
                 {
                     neighbor.bestCost = (ushort)(neighbor.cost + curCell.bestCost);
@@ -156,6 +148,11 @@ public class FlowField
                 }
             }
         }
+
+        //loop thru obstacle cells and increase cost of neighbors to deter ai from walking into them
+
+
+
     }
 
     public void CreateFlowField()
@@ -176,6 +173,23 @@ public class FlowField
             }
 
         }
+    }
+
+    //causes infinite loop for some reason
+    public void IncreaseCostAroundCells(Cell givenCell)
+    {
+        List<GridDirection> directionToCheck = GridDirection.AllDirections;
+
+        //increase cost of neighboring cells
+        foreach (GridDirection direction in directionToCheck)
+        {
+            Cell neighborCell = GetCellAtRelativePos(givenCell.gridIndex, direction);
+            if (neighborCell != null)
+            {
+                neighborCell.increaseCost(5);
+            }
+        }
+
     }
 
     private List<Cell> GetNeighborCells(Vector2Int nodeIndex, List<GridDirection> directions)

@@ -101,28 +101,29 @@ public class GridContainer : MonoBehaviour
     //draws the grid when gizmos drawing enabled
     private void DrawGrid(Vector2Int gridSize, Color drawColor, float drawCellRadius)
     {
-        Gizmos.color = drawColor;
-        for (int i = 0; i < gridSize.x; i++)
+        if (Application.isPlaying)
         {
-            for (int j = 0; j < gridSize.y; j++)
+            Gizmos.color = drawColor;
+            for (int i = 0; i < gridSize.x; i++)
             {
-                Vector3 cellPosition = new Vector3(flowField.cells[i, j].worldPos.x, flowField.cells[i, j].worldPos.y, 0);
-
-                //Vector3 cellPosition = new Vector3(drawCellRadius * 2 * i + drawCellRadius, drawCellRadius * 2 * j + drawCellRadius, 0);
-                Vector3 size = Vector3.one * drawCellRadius * 2;
-                Gizmos.DrawWireCube(cellPosition, size);
-                //now draw cell cost
-                if (flowField != null)
+                for (int j = 0; j < gridSize.y; j++)
                 {
-                    Cell cell = flowField.cells[i, j];
-                    GUIStyle style = new GUIStyle();
-                    style.normal.textColor = Color.white;
-                    UnityEditor.Handles.Label(cell.worldPos, cell.bestCost.ToString(), style);
+                    Vector3 cellPosition = new Vector3(flowField.cells[i, j].worldPos.x, flowField.cells[i, j].worldPos.y, 0);
 
-                }
+                    //Vector3 cellPosition = new Vector3(drawCellRadius * 2 * i + drawCellRadius, drawCellRadius * 2 * j + drawCellRadius, 0);
+                    Vector3 size = Vector3.one * drawCellRadius * 2;
+                    Gizmos.DrawWireCube(cellPosition, size);
+                    //now draw cell cost
+                    if (flowField != null)
+                    {
+                        Cell cell = flowField.cells[i, j];
+                        GUIStyle style = new GUIStyle();
+                        style.normal.textColor = Color.white;
+                        UnityEditor.Handles.Label(cell.worldPos, cell.bestCost.ToString(), style);
+
+                    }
                 }
             }
-
-
+        }
     }
 }
