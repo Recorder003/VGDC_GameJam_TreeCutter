@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3603624634320520306}
   - component: {fileID: 6057484056745194446}
-  - component: {fileID: -8275358957920344454}
-  m_Layer: 8
+  - component: {fileID: 5619905155174494780}
+  m_Layer: 0
   m_Name: Terrain Sprite Sheet_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -45863053
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 1883393626, guid: 02f80e65852fd6f4c970294c2ebef324, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &-8275358957920344454
+--- !u!61 &5619905155174494780
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
