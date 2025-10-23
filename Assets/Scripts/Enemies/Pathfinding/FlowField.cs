@@ -14,6 +14,7 @@ public class FlowField
     public Vector3 gridOrigin = Vector3.zero;
     public float cellDiameter;
     public Cell destinationCell;
+    private Vector2 gridOffset = new Vector2(0.5f,0.5f);
     //public NativeArray<BoxcastCommand> commands = new NativeArray<BoxcastCommand>(1, Allocator.TempJob); //causes leak if uncommented
     QueryParameters qp = QueryParameters.Default;
     
@@ -44,8 +45,8 @@ public class FlowField
     {
         Vector3 playerPos = PlayerMovement.Instance.transform.position;
         gridOrigin = new Vector3(
-            playerPos.x - (gridSize.x * cellDiameter) / 2f,
-            playerPos.y - (gridSize.y * cellDiameter) / 2f,
+            playerPos.x - gridOffset.x - (gridSize.x * cellDiameter) / 2f,
+            playerPos.y - gridOffset.y - (gridSize.y * cellDiameter) / 2f,
             0
         );
 
@@ -68,7 +69,7 @@ public class FlowField
     public void CreateCostField()
     {
 
-        Debug.Log("Creating cost");
+        //Debug.Log("Creating cost");
 
         Vector3 cellHalf = Vector3.one * cellRadius;
         int terrainLayer = LayerMask.GetMask("Obstacle");
