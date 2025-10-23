@@ -718,6 +718,7 @@ GameObject:
   - component: {fileID: 1962459089}
   - component: {fileID: 1962459088}
   - component: {fileID: 1962459090}
+  - component: {fileID: 1962459091}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -737,11 +738,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef40fb1e3e3ca14ba8d84a3bd1e4e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   lastHorizontalVector: 0
   lastVerticalVector: 0
   moveDir: {x: 0, y: 0}
   lastMovedVector: {x: 0, y: 0}
+  characterData: {fileID: 11400000, guid: 26dee96e75dd5544aa47fffa22612e21, type: 2}
 --- !u!61 &1962459084
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -930,6 +931,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 1962459082}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 418a4c8288029134e89e36b04816743a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 26dee96e75dd5544aa47fffa22612e21, type: 2}
+  experience: 0
+  level: 1
+  experienceCap: 0
+  invincibilityDuration: 0.5
+  levelRanges:
+  - startLevel: 1
+    endLevel: 3
+    experienceCapIncrease: 100
+  - startLevel: 4
+    endLevel: 5
+    experienceCapIncrease: 200
+--- !u!114 &1962459091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962459082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 454a4fd4c1f69744ea6da48f264b180c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Script: {fileID: 11500000, guid: 1b19149ce6420be4bba74f12e36fbbd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -1001,6 +1029,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8233868297300436055, guid: 899411bc9fafdee4cafcc2dd8ed4645e, type: 3}
+      propertyPath: drops.Array.data[0].dropRate
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3177123246538412877, guid: 899411bc9fafdee4cafcc2dd8ed4645e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.11
