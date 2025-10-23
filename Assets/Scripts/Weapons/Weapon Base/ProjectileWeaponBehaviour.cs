@@ -19,6 +19,8 @@ public class ProjectileWeaponBehaviour : MonoBehaviour
         currentSpeed = weaponData.Speed;
         currentCooldownDuration = weaponData.CooldownDuration;
         currentPierce = weaponData.Pierce;
+
+        currentPierce = 6;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -80,8 +82,8 @@ public class ProjectileWeaponBehaviour : MonoBehaviour
         //Reference the script from the collided collider and deal damage using TakeDamage()
         if (col.CompareTag("Enemy"))
         {
-            EnemyStats enemy=col.GetComponent<EnemyStats>();
-            enemy.TakeDamage(currentDamage);
+            EnemyBase enemy=col.GetComponent<EnemyBase>();
+            enemy.TakeDamage(2);
             ReducePierce();
         }
     }

@@ -29,16 +29,18 @@ public class GridContainer : MonoBehaviour
         float bottomBound = cameraPos.y - halfHeight;
         float topBound = cameraPos.y + halfHeight;
 
-        Debug.Log("Camera Bounds: Left=" + leftBound + ", Right=" + rightBound + ", Bottom=" + bottomBound + ", Top=" + topBound);
+        //Debug.Log("Camera Bounds: Left=" + leftBound + ", Right=" + rightBound + ", Bottom=" + bottomBound + ", Top=" + topBound);
 
-        gridSize.x = Mathf.CeilToInt((rightBound - leftBound) / (cellRadius * 2));
-        gridSize.y = Mathf.CeilToInt((topBound - bottomBound) / (cellRadius * 2));
+
+        //plus 1 to account for grid centering
+        gridSize.x = Mathf.CeilToInt((rightBound - leftBound) / (cellRadius * 2)) + 1;
+        gridSize.y = Mathf.CeilToInt((topBound - bottomBound) / (cellRadius * 2)) + 1;
 
         flowField = new FlowField(cellRadius, gridSize);
 
         if (centerOnPlayer)
         {
-            Debug.Log("Creating grid on player");
+            //Debug.Log("Creating grid on player");
             flowField.CreateGridOnPlayer();
         }
         else

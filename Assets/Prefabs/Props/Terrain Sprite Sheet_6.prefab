@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6393383127105881562}
   - component: {fileID: 7952943609643758108}
   - component: {fileID: -2753526910016643237}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Terrain Sprite Sheet_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
