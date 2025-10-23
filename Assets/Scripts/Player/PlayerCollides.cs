@@ -1,0 +1,84 @@
+using System.Collections;
+using UnityEngine;
+using DG.Tweening;
+
+public class PlayerCollides : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int playerHealth;
+    public bool invulnerable = false;
+    public float iFrameDuration = 1f;
+    private SpriteRenderer spriteRenderer;
+
+    void Start()
+    {
+        playerHealth = 50;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        print("Triggered with " + collision.gameObject.name);
+
+        var enemyTag = collision.gameObject.tag;
+
+        switch (enemyTag)
+        {
+            case "Enemy":
+                TakeDamage(collision.gameObject.GetComponent<EnemyBase>().collideDamage);
+                break;
+
+        }
+
+    }
+
+    private void TakeDamage(int damage)
+    {
+
+        if (invulnerable)
+            return;
+
+        print("Player takes " + damage + " damage.");
+        print("Player health before damage: " + playerHealth);
+        playerHealth -= damage;
+        //start hurt flash animation
+
+        if (playerHealth <= 0)
+        {
+            PlayerDies();
+        } else
+        {
+            HurtFlash();
+            StartCoroutine(IFramesCoro());
+        }
+    }
+
+    private void HurtFlash()
+    {
+        //implement hurt flash animation here
+        spriteRenderer.color = Color.red;
+        spriteRenderer.DOColor(Color.white, iFrameDuration);
+
+    }
+
+    private void PlayerDies()
+    {
+        print("Player Died");
+        //bring up death ui
+    }
+
+    private IEnumerator IFramesCoro()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(iFrameDuration);
+        invulnerable = false;
+    }
+
+
+}

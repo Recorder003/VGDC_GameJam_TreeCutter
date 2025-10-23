@@ -17,6 +17,21 @@ public class PlayerMovement : MonoBehaviour
     public CharacterScriptableObject characterData;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public static PlayerMovement Instance { get; private set; }
+
+    private void Awake()
+    {
+        //set this to instance
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -63,4 +78,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.linearVelocity = new Vector2(moveDir.x * characterData.MoveSpeed, moveDir.y * characterData.MoveSpeed);
     }
+
+
+
 }
