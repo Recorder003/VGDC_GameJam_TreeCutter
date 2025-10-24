@@ -84,6 +84,13 @@ public class GameManager : MonoBehaviour
             skillSprites.Add(Sprites[i]);
         }
 
+        for (int i = 0; i < Scripts.Length; i++)
+        {
+            skillScripts.Add(Scripts[i]);
+        }
+
+        print("Test Here");
+        print(skillScripts.Count);
 
     }
 
@@ -121,18 +128,19 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void SkillChosen(GameObject skillObj)
+    public void SkillChosen(string skillName)
     {
 
-        string skillName = skillObj.GetComponent<TextMeshProUGUI>().text;
+        //string skillName = skillObj.GetComponent<TextMeshProUGUI>().text;
 
         foreach (Skill skill in skillsToDisplay)
         {
             if (skillName == skill.skillName)
             {
                 //skillScripts.Add((MonoBehaviour)System.Activator.CreateInstance(System.Type.GetType(skill.skillScriptName))); //??
+                print("Chosen skill: " + skill.skillName);
                 MonoBehaviour myScript = Instantiate(skillScripts.Find(s => s.name == skill.skillName), gameObject.transform);
-                Destroy(myScript);
+                Destroy(myScript,2f);
                 //should run awake then die
 
             }
@@ -146,6 +154,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(skillSelectionUI.transform.GetChild(i).gameObject);
         }
+
+        skillSelectionUI.SetActive(false);
 
 
     }
