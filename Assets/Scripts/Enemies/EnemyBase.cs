@@ -22,12 +22,14 @@ public class EnemyBase : MonoBehaviour
     private float flashDuration;
     public string hitSfxName;
     public int difficultyLevel;
+    public DropRateManager dropRateManager;
     // could have some sort of unique pathing for certain enemies
 
     private void Awake()
     {
         flashDuration = GameManager.Instance.enemyHitFlashDur;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        dropRateManager = GetComponent<DropRateManager>();
     }
 
     void Start()
@@ -81,6 +83,11 @@ public class EnemyBase : MonoBehaviour
     {
         //might want to store any coroutines happening on enemy and end them
         //throw new NotImplementedException();
+        if (dropRateManager != null)
+        {
+            dropRateManager.itemDestroyed();
+
+        }
         EnemyManager.Instance.EnemyKilled(gameObject);
         Destroy(gameObject);
     }
