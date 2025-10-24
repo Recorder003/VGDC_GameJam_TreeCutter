@@ -295,6 +295,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d73dca857a343ff4a8c6b458b2fb6dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementType: 0
+  health: 10
+  speed: 1
+  collideDamage: 2
+  spriteRenderer: {fileID: 0}
+  hitSfxName: 
+  difficultyLevel: 3
+  dropRateManager: {fileID: 0}
   bulletPrefab: {fileID: 9084441854759100738, guid: 1b7bd6d89b417fb4ebf1318a07ebb2d9, type: 3}
   startShotCooldown: 3
 --- !u!50 &1591917170428754555
