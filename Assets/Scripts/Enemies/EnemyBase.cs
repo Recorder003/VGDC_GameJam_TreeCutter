@@ -32,7 +32,7 @@ public class EnemyBase : MonoBehaviour
         dropRateManager = GetComponent<DropRateManager>();
     }
 
-    void Start()
+    protected virtual void Start()
     {
         //flashDuration = GameManager.Instance.enemyHitFlashDur;
         //spriteRenderer = GetComponent<SpriteRenderer>();
@@ -42,7 +42,7 @@ public class EnemyBase : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
 
     }
