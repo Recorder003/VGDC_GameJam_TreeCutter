@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2847085703006978718}
   - component: {fileID: -2712078133914767908}
   - component: {fileID: -6334562319062146687}
-  m_Layer: 0
   m_Layer: 8
   m_Name: Terrain Sprite Sheet_8
   m_TagString: Prop

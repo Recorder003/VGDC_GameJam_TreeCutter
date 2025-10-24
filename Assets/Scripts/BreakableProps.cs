@@ -16,6 +16,7 @@ public class BreakableProps : MonoBehaviour
 
     public void Kill()
     {
+        gameObject.GetComponent<DropRateManager>().itemDestroyed();
         Destroy(gameObject);
     }
 }

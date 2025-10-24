@@ -11,13 +11,16 @@ public class EnemyManager : MonoBehaviour
     public GridContainer gridContainer;
     public GameObject enemyPrefab;
     public List<GameObject> enemyPrefabs;
-    public int UnitsPerSpawn = 2;
+    //public int UnitsPerSpawn = 2;
+    private int maxEnemies = 30;
 
+    public string testEnemyToSpawn;
     private List<EnemyObj> enemiesSpawned;
 
     public static EnemyManager Instance { get; private set; }
     public Vector3 playerPos;
-
+    public int currentDifficulty; //set to public for testing
+    public bool spawningEnemies = false;
 
 
     class EnemyObj
@@ -25,11 +28,14 @@ public class EnemyManager : MonoBehaviour
         public EnemyBase enemyBase;
         public GameObject obj;
         public Rigidbody2D enemyRb;
+        public Collider2D enemyCollider;
+        public bool outsideGrid = false;
         public EnemyObj(GameObject enemy)
         {
             enemyBase = enemy.GetComponent<EnemyBase>();
             enemyRb = enemy.GetComponent<Rigidbody2D>();
             obj = enemy;
+            enemyCollider = enemy.GetComponent<Collider2D>();
         }
     }
 
@@ -44,6 +50,9 @@ public class EnemyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        currentDifficulty = 0;
+
     }
 
     // Update is called once per frame
@@ -54,9 +63,12 @@ public class EnemyManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                SpawnEnemyFromName("LongArms");
+                SpawnEnemyFromName(testEnemyToSpawn);
             }
         }
+
+
+        currentDifficulty = Mathf.FloorToInt(Time.timeSinceLevelLoad / 3f);
 
 
     }
@@ -65,6 +77,15 @@ public class EnemyManager : MonoBehaviour
     {
         if (gridContainer.flowField == null)
             return;
+
+        if (enemiesSpawned.Count < maxEnemies && spawningEnemies)
+        {
+            float roll = Random.Range(0f, 1f);
+            if (roll < 0.05f)
+            {
+                chooseEnemy();
+            }
+        }
 
         foreach (EnemyObj enemy in enemiesSpawned)
         {
@@ -77,11 +98,49 @@ public class EnemyManager : MonoBehaviour
             }
             else if (enemy.enemyBase.movementType == EnemyBase.MovementType.Flying)
             {
-                enemy.obj.transform.position = Vector2.MoveTowards(transform.position, playerPos, enemy.enemyBase.speed * Time.deltaTime);
+                enemy.obj.transform.position = Vector2.MoveTowards(transform.position, playerPos, enemy.enemyBase.speed * Time.deltaTime); //doesnt work
             }
             else if (enemy.enemyBase.movementType == EnemyBase.MovementType.Ghost)
             {
-                //Ghost enemy logic here
+                Rigidbody2D enemyRb = enemy.enemyRb;
+                enemyRb.linearVelocity = (playerPos - enemy.obj.transform.position).normalized * enemy.enemyBase.speed;
+            }
+
+
+            //if enemy is outside grid, turn off colliding with obstacles until back in grid, skip if already avoiding obstacles
+            if (enemy.enemyBase.movementType == EnemyBase.MovementType.Flying || enemy.enemyBase.movementType == EnemyBase.MovementType.Ghost)
+                continue;
+
+            Vector2Int gridSize = gridContainer.flowField.gridSize;
+            Cell cellCheck = gridContainer.flowField.getCellFromWorldPos(enemy.obj.transform.position);
+            //print("Enemy " + enemy.obj.name + " at grid index " + cellCheck.gridIndex);
+            if (cellCheck.gridIndex.x + 1 == gridSize.x || cellCheck.gridIndex.x == 0 || cellCheck.gridIndex.y + 1 == gridSize.y || cellCheck.gridIndex.y == 0)
+            {
+                enemy.outsideGrid = true;
+            }
+            else
+            {
+                enemy.outsideGrid = false;
+            }
+
+
+            if (enemy.outsideGrid)
+            {
+                enemy.enemyCollider.excludeLayers = LayerMask.GetMask("Obstacle");
+            }
+            else
+            {
+                enemy.enemyCollider.excludeLayers = 0;
+            }
+
+
+            if (enemy.obj.transform.position.x > playerPos.x)
+            {
+                enemy.enemyBase.spriteRenderer.flipX = true;
+            }
+            else
+            {
+                enemy.enemyBase.spriteRenderer.flipX = false;
             }
 
         }
@@ -102,11 +161,12 @@ public class EnemyManager : MonoBehaviour
     {
         GameObject enemyPrefab = enemyPrefabs.Find(e => e.name == enemyName);
         GameObject enemyInstance = Instantiate(enemyPrefab);
+        enemyInstance.name = enemyPrefab.name + "_" + Time.timeSinceLevelLoad.ToString("F2");
         enemyInstance.transform.parent = transform;
         Vector3 spawnPos = Vector3.zero;
 
         Vector2Int gridSize = gridContainer.flowField.gridSize;
-        print("Grid Size: " + gridSize);
+        //print("Grid Size: " + gridSize);
 
         int randomX = Random.Range(0, gridSize.x-1);
         int randomY = Random.Range(0, gridSize.y - 1);
@@ -143,7 +203,25 @@ public class EnemyManager : MonoBehaviour
         //top row = max y, bottom row = min y, left col = min x, right col = max x
     }
 
-    public void EnemyKilled(GameObject enemyObj)
+    private void chooseEnemy()
+    {
+        //idea is to have enemies closer to the difficulty level to have a higher chance to spawn, but higher and lower difficulties to have a lower chance
+
+        foreach (GameObject enemyPrefab in enemyPrefabs)
+        {
+            EnemyBase enemyBase = enemyPrefab.GetComponent<EnemyBase>();
+            int difficultyDiff = Mathf.Abs(enemyBase.difficultyLevel - currentDifficulty);
+            float spawnChance = 1f / (difficultyDiff + 1); //the closer the difficulty, the higher the chance
+            float roll = Random.Range(0f, 1f);
+            if (roll < spawnChance)
+            {
+                SpawnEnemyFromName(enemyPrefab.name);
+                return;
+            }
+        }
+    }
+
+        public void EnemyKilled(GameObject enemyObj)
     {
         enemiesSpawned.RemoveAll(e => e.obj == enemyObj);
     }

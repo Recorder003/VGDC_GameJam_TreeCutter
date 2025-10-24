@@ -7,7 +7,7 @@ public class PlayerCollides : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public int playerHealth;
     public bool invulnerable = false;
-    public float iFrameDuration = 1f;
+    public float iFrameDuration = 0.2f;
     private SpriteRenderer spriteRenderer;
 
     void Start()
