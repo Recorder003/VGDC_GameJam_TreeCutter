@@ -41,7 +41,7 @@ public class PlayerStats : MonoBehaviour
     bool isInvincible;
 
     public List<LevelRange> levelRanges;
-
+    public static PlayerStats Instance { get; private set; }
 
     void Awake()
     {
@@ -51,6 +51,16 @@ public class PlayerStats : MonoBehaviour
         currentMoveSpeed = characterData.MoveSpeed;
         currentMight = characterData.Might;
         currentProjectileSpeed = characterData.ProjectileSpeed;
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
     }
 
 
