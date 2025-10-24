@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
     {
         //bring up skill selection UI
         //generate new skills
+        skillSelectionUI.SetActive(true);
 
         for (int i = 0; i < skillsToChoose; i++)
         {
@@ -117,8 +118,6 @@ public class GameManager : MonoBehaviour
         skillPrefab.transform.Find("SkillName").GetComponent<TextMeshProUGUI>().text = aSkill.skillName;
         skillPrefab.transform.Find("SkillDescription").GetComponent<TextMeshProUGUI>().text = aSkill.skillDescription;
         skillPrefab.transform.Find("SkillImage").GetComponent<Image>().sprite = skillSprites.Find(s => s.name == aSkill.skillImageName);
-
-
 
     }
 
