@@ -1,3 +1,6 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +13,44 @@ public class GameManager : MonoBehaviour
     public float enemyHitFlashDur = 0.2f;
 
     public static GameManager Instance { get; private set; }
+    public GameObject skillSelectionUI;
+    public GameObject skillPrefab;
+
+    public int skillsToChoose = 3;
+    List<Sprite> skillSprites = new List<Sprite>();
+
+
+    public enum ScriptType
+    {
+        Passive,
+        OneShot
+    }
+
+    public class Skill
+    {
+        public string skillName;
+        public string skillImageName;
+        public string skillDescription;
+        public string skillScriptName; //the script belonging to the skill?
+        public int skillRarity;
+        public ScriptType scriptType;
+
+   
+
+        public Skill(string name, string skillImageName, string skillDescription, string skillScriptName, int skillRarity, ScriptType scriptType)
+        {
+            this.skillName = name;
+            this.skillImageName = skillImageName;
+            this.skillDescription = skillDescription;
+            this.skillScriptName = skillScriptName;
+            this.skillRarity = skillRarity;
+            this.scriptType = scriptType;
+        }
+    }
+
+    List<Skill> skills;
+
+
 
     private void Awake()
     {
@@ -22,7 +63,54 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        skills = new List<Skill>();
+
+        skills.Add(new Skill("Axe Multishot", "AxeImage", "Throw more axes", "AxeMulti", 1, ScriptType.OneShot));
+        skills.Add(new Skill("Sharper Axe", "AxeImage", "Your axe is sharper...", "SharpAxe", 1, ScriptType.OneShot));
+        skills.Add(new Skill("Axe Multishot TWO", "AxeImage", "Throw even more axes", "AxeMulti", 1, ScriptType.OneShot));
+
+
+        Sprite[] Sprites;
+        Sprites = Resources.LoadAll<Sprite>("SkillSprites");
+
+        //for (int i = 0; i < Sprites.Length; i++)
+        //{
+        //    skillSprites
+        //}
+
+
     }
 
+    public void playerLeveledUp(int newLevel)
+    {
+        Time.timeScale = 0f;
+        showSkillUI();
+
+    }
+
+    private void showSkillUI()
+    {
+        //bring up skill selection UI
+        //generate new skills
+
+        for (int i = 0; i < skillsToChoose; i++)
+        {
+            int randomSkillIndex = Random.Range(0, skills.Count);
+            Skill randomSkill = skills[randomSkillIndex];
+
+            GameObject skillObj = Instantiate(skillPrefab, skillSelectionUI.transform);
+            SetUpSkill(randomSkill, skillObj);
+        }
+
+    }
+
+    private void SetUpSkill(Skill aSkill, GameObject skillPrefab)
+    {
+        skillPrefab.transform.Find("SkillName").GetComponent<TextMeshProUGUI>().text = aSkill.skillName;
+        skillPrefab.transform.Find("SkillDescription").GetComponent<TextMeshProUGUI>().text = aSkill.skillDescription;
+        
+
+    }
 
 }
