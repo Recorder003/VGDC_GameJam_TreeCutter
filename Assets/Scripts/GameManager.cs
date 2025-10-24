@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class GameManager : MonoBehaviour
 
     public int skillsToChoose = 3;
     List<Sprite> skillSprites = new List<Sprite>();
-
+    List<GameObject> skillScripts = new List<GameObject>();
+    List<Skill> skillsToDisplay = new List<Skill>();
 
     public enum ScriptType
     {
@@ -67,18 +69,29 @@ public class GameManager : MonoBehaviour
         skills = new List<Skill>();
 
         skills.Add(new Skill("Axe Multishot", "AxeImage", "Throw more axes", "AxeMulti", 1, ScriptType.OneShot));
-        skills.Add(new Skill("Sharper Axe", "AxeImage", "Your axe is sharper...", "SharpAxe", 1, ScriptType.OneShot));
+        //skills.Add(new Skill("Sharper Axe", "AxeImage", "Your axe is sharper...", "SharpAxe", 1, ScriptType.OneShot));
         skills.Add(new Skill("Axe Multishot TWO", "AxeImage", "Throw even more axes", "AxeMulti", 1, ScriptType.OneShot));
 
 
         Sprite[] Sprites;
         Sprites = Resources.LoadAll<Sprite>("SkillSprites");
 
-        //for (int i = 0; i < Sprites.Length; i++)
-        //{
-        //    skillSprites
-        //}
+        GameObject[] ScriptObjs;
+        ScriptObjs = Resources.LoadAll<GameObject>("SkillScripts");
 
+        for (int i = 0; i < Sprites.Length; i++)
+        {
+            skillSprites.Add(Sprites[i]);
+        }
+
+        for (int i = 0; i < ScriptObjs.Length; i++)
+        {
+            print("Loaded skill script: " + ScriptObjs[i].name);
+            skillScripts.Add(ScriptObjs[i]);
+        }
+
+        print("Test Here");
+        print(skillScripts.Count);
 
     }
 
@@ -93,6 +106,7 @@ public class GameManager : MonoBehaviour
     {
         //bring up skill selection UI
         //generate new skills
+        skillSelectionUI.SetActive(true);
 
         for (int i = 0; i < skillsToChoose; i++)
         {
@@ -100,7 +114,9 @@ public class GameManager : MonoBehaviour
             Skill randomSkill = skills[randomSkillIndex];
 
             GameObject skillObj = Instantiate(skillPrefab, skillSelectionUI.transform);
+            skillObj.SetActive(true);
             SetUpSkill(randomSkill, skillObj);
+            skillsToDisplay.Add(randomSkill);
         }
 
     }
@@ -109,8 +125,42 @@ public class GameManager : MonoBehaviour
     {
         skillPrefab.transform.Find("SkillName").GetComponent<TextMeshProUGUI>().text = aSkill.skillName;
         skillPrefab.transform.Find("SkillDescription").GetComponent<TextMeshProUGUI>().text = aSkill.skillDescription;
-        
+        skillPrefab.transform.Find("SkillImage").GetComponent<Image>().sprite = skillSprites.Find(s => s.name == aSkill.skillImageName);
 
     }
+
+    public void SkillChosen(string skillName)
+    {
+
+        //string skillName = skillObj.GetComponent<TextMeshProUGUI>().text;
+
+        foreach (Skill skill in skillsToDisplay)
+        {
+            if (skillName == skill.skillName)
+            {
+                //skillScripts.Add((MonoBehaviour)System.Activator.CreateInstance(System.Type.GetType(skill.skillScriptName))); //??
+                print("Chosen skill: " + skill.skillName);
+                SkillBase myScript = Instantiate(skillScripts.Find(s => s.name == skill.skillScriptName).GetComponent<SkillBase>(), gameObject.transform);
+                myScript.PerformSkill();
+                //Destroy(myScript,2f);
+                //should run awake then die
+
+            }
+        }
+
+        skillsToDisplay.Clear();
+        Time.timeScale = 1f;
+        //destroy children in skillui
+
+        for (int i = skillSelectionUI.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(skillSelectionUI.transform.GetChild(i).gameObject);
+        }
+
+        skillSelectionUI.SetActive(false);
+
+
+    }
+
 
 }

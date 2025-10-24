@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d60610c80e561cf43ab18af40146f2ec
+guid: 1eaeb0f84c93c17488ab7251d45d1afa
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - weaponData: {fileID: 11400000, guid: 575a60932a09d4641951d09cd035a17b, type: 2}
+  - KnifeControllerPrefab: {fileID: 4678119721091411705, guid: 8a4554490cb13da49aaccfaa503be813, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
