@@ -1,18 +1,34 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using UnityEditor.U2D.Animation;
 
 public class PlayerCollides : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public int playerHealth;
+    public int maxHealth;
     public bool invulnerable = false;
     public float iFrameDuration = 0.2f;
     private SpriteRenderer spriteRenderer;
 
+
+    public static PlayerCollides Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
-        playerHealth = 50;
+        maxHealth = 50;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -45,11 +61,11 @@ public class PlayerCollides : MonoBehaviour
             return;
 
         print("Player takes " + damage + " damage.");
-        print("Player health before damage: " + playerHealth);
-        playerHealth -= damage;
+        print("Player health before damage: " + maxHealth);
+        maxHealth -= damage;
         //start hurt flash animation
 
-        if (playerHealth <= 0)
+        if (maxHealth <= 0)
         {
             PlayerDies();
         } else
@@ -72,6 +88,8 @@ public class PlayerCollides : MonoBehaviour
         print("Player Died");
         //bring up death ui
     }
+
+
 
     private IEnumerator IFramesCoro()
     {

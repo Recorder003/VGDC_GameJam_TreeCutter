@@ -28,6 +28,7 @@ public class SoundManager : MonoBehaviour
         LoadSounds();
 
         audioSource = GetComponent<AudioSource>();
+
     }
 
     private void LoadSounds()

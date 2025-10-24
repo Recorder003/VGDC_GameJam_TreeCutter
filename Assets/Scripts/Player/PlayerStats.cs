@@ -1,4 +1,7 @@
+using DG.Tweening;
 using NUnit.Framework;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,6 +15,9 @@ public class PlayerStats : MonoBehaviour
     float currentMoveSpeed;
     float currentMight;
     float currentProjectileSpeed;
+    private SpriteRenderer spriteRenderer;
+
+    public static event Action<int> LeveledUp;
 
     //Experience and level of the player
     [Header("Experience/Level")]
@@ -52,6 +58,7 @@ public class PlayerStats : MonoBehaviour
     {
         //Initialize the experience cap as the first experience cap increase
         experienceCap = levelRanges[0].experienceCapIncrease;
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -91,6 +98,8 @@ public class PlayerStats : MonoBehaviour
                 }
             }
             experienceCap += experienceCapIncrease;
+
+            GameManager.Instance.playerLeveledUp(level);
         }
     }
 
@@ -130,4 +139,66 @@ public class PlayerStats : MonoBehaviour
             }
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        print("Triggered with " + collision.gameObject.name);
+
+        var enemyTag = collision.gameObject.tag;
+
+        switch (enemyTag)
+        {
+            case "Enemy":
+                TakeDamage(collision.gameObject.GetComponent<EnemyBase>().collideDamage);
+                break;
+
+        }
+
+    }
+
+    private void TakeDamage(int damage)
+    {
+
+        if (isInvincible)
+            return;
+
+        print("Player takes " + damage + " damage.");
+        print("Player health before damage: " + currentHealth);
+        currentHealth -= damage;
+        //start hurt flash animation
+
+        if (currentHealth <= 0)
+        {
+            PlayerDies();
+        }
+        else
+        {
+            HurtFlash();
+            StartCoroutine(IFramesCoro());
+        }
+    }
+
+    private void HurtFlash()
+    {
+        //implement hurt flash animation here
+        spriteRenderer.color = Color.red;
+        spriteRenderer.DOColor(Color.white, invincibilityTimer);
+
+    }
+
+    private void PlayerDies()
+    {
+        print("Player Died");
+        //bring up death ui
+    }
+
+
+
+    private IEnumerator IFramesCoro()
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invincibilityTimer);
+        isInvincible = false;
+    }
+
 }
