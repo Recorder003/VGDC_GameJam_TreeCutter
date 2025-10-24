@@ -37,8 +37,6 @@ public class EnemyBase : MonoBehaviour
         //flashDuration = GameManager.Instance.enemyHitFlashDur;
         //spriteRenderer = GetComponent<SpriteRenderer>();
         //check if spriterender is null
-
-
     }
 
     // Update is called once per frame
