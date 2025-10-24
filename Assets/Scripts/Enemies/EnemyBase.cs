@@ -18,15 +18,27 @@ public class EnemyBase : MonoBehaviour
     public int health;
     public int speed;
     public int collideDamage;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private float flashDuration;
     public string hitSfxName;
+    public int difficultyLevel;
+    public DropRateManager dropRateManager;
     // could have some sort of unique pathing for certain enemies
 
-    void Start()
+    private void Awake()
     {
         flashDuration = GameManager.Instance.enemyHitFlashDur;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        dropRateManager = GetComponent<DropRateManager>();
+    }
+
+    void Start()
+    {
+        //flashDuration = GameManager.Instance.enemyHitFlashDur;
+        //spriteRenderer = GetComponent<SpriteRenderer>();
+        //check if spriterender is null
+
+
     }
 
     // Update is called once per frame
@@ -50,8 +62,17 @@ public class EnemyBase : MonoBehaviour
         } else
         {
             gameObject.transform.DOShakeRotation(0.2f, 10, 20, 90, false);
-            spriteRenderer.color = Color.red;
-            spriteRenderer.DOColor(Color.white, flashDuration);
+            if (spriteRenderer != null)
+            {
+
+                spriteRenderer.color = Color.red;
+                spriteRenderer.DOColor(Color.white, flashDuration);
+            }
+            else
+            {
+                Debug.LogWarning("SpriteRenderer is null on enemy: " + gameObject.name);
+            }
+
             //play hit sfx
         }
     }
@@ -62,6 +83,11 @@ public class EnemyBase : MonoBehaviour
     {
         //might want to store any coroutines happening on enemy and end them
         //throw new NotImplementedException();
+        if (dropRateManager != null)
+        {
+            dropRateManager.itemDestroyed();
+
+        }
         EnemyManager.Instance.EnemyKilled(gameObject);
         Destroy(gameObject);
     }

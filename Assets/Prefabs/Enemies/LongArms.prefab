@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 9062171756431236003}
   - component: {fileID: 3508297513994569770}
   - component: {fileID: 14531029506274939}
-  - component: {fileID: -885968242095430126}
   - component: {fileID: 8513139741458500870}
   - component: {fileID: 6520348175873417347}
+  - component: {fileID: 1923237917993728617}
+  - component: {fileID: -3142261095340407930}
   m_Layer: 0
   m_Name: LongArms
   m_TagString: Enemy
@@ -118,23 +119,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-885968242095430126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 350879251537021207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a807e254593b3a4187cbd4219f329a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementType: 0
-  health: 10
-  speed: 1
-  collideDamage: 4
-  hitSfxName: 
 --- !u!95 &8513139741458500870
 Animator:
   serializedVersion: 7
@@ -203,3 +187,39 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 7.5829496, y: 6.4799995}
   m_EdgeRadius: 0
+--- !u!114 &1923237917993728617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350879251537021207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea15220bc8d74d041943ab2d817c9fad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementType: 0
+  health: 14
+  speed: 1
+  collideDamage: 6
+  spriteRenderer: {fileID: 0}
+  hitSfxName: 
+  difficultyLevel: 4
+  dropRateManager: {fileID: 0}
+--- !u!114 &-3142261095340407930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350879251537021207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582fab9f6eb743f44a3bb8d09eb8a20d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drops:
+  - name: Blue Gem
+    itemPrefab: {fileID: 1199233060605090378, guid: 66b689d0748b9d24e9c035f761feadb9, type: 3}
+    dropRate: 100
