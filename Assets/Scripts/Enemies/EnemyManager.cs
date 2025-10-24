@@ -205,8 +205,7 @@ public class EnemyManager : MonoBehaviour
 
     private void chooseEnemy()
     {
-        //idea is to have enemies closer to the difficulty level to have a higher chance to spawn, but higher and lower difficulties to have a lower chance
-
+        //idea is to have enemies closer to the difficulty level to have a higher chance to spawn, but higher and lower difficulties to have a lower 
         foreach (GameObject enemyPrefab in enemyPrefabs)
         {
             EnemyBase enemyBase = enemyPrefab.GetComponent<EnemyBase>();

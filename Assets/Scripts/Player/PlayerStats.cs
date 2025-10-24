@@ -41,7 +41,7 @@ public class PlayerStats : MonoBehaviour
     bool isInvincible;
 
     public List<LevelRange> levelRanges;
-
+    public static PlayerStats Instance { get; private set; }
 
     void Awake()
     {
@@ -51,6 +51,16 @@ public class PlayerStats : MonoBehaviour
         currentMoveSpeed = characterData.MoveSpeed;
         currentMight = characterData.Might;
         currentProjectileSpeed = characterData.ProjectileSpeed;
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
     }
 
 
@@ -103,22 +113,22 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float dmg)
-    {
-        //If the player is not currently invincible, reduce health and start invinciblity
-        if (!isInvincible)
-        {
-            currentHealth -= dmg;
+    //public void TakeDamage(float dmg)
+    //{
+    //    //If the player is not currently invincible, reduce health and start invinciblity
+    //    if (!isInvincible)
+    //    {
+    //        currentHealth -= dmg;
 
-            invincibilityTimer = invincibilityDuration;
-            isInvincible = true;
+    //        invincibilityTimer = invincibilityDuration;
+    //        isInvincible = true;
 
-            if (currentHealth <= 0)
-            {
-                Kill();
-            }
-        }
-    }
+    //        if (currentHealth <= 0)
+    //        {
+    //            Kill();
+    //        }
+    //    }
+    //}
 
     public void Kill()
     {
@@ -156,7 +166,7 @@ public class PlayerStats : MonoBehaviour
 
     }
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(float damage)
     {
 
         if (isInvincible)
@@ -181,8 +191,9 @@ public class PlayerStats : MonoBehaviour
     private void HurtFlash()
     {
         //implement hurt flash animation here
+        print("Player Hurt Flash");
         spriteRenderer.color = Color.red;
-        spriteRenderer.DOColor(Color.white, invincibilityTimer);
+        spriteRenderer.DOColor(Color.white, invincibilityDuration);
 
     }
 
@@ -197,7 +208,7 @@ public class PlayerStats : MonoBehaviour
     private IEnumerator IFramesCoro()
     {
         isInvincible = true;
-        yield return new WaitForSeconds(invincibilityTimer);
+        yield return new WaitForSeconds(invincibilityDuration);
         isInvincible = false;
     }
 
