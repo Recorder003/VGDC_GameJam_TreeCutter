@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5422267820451840582}
   m_Layer: 0
   m_Name: Pine
-  m_TagString: Untagged
+  m_TagString: EnemyProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -170,5 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df109ecfdb6dcf4aa037ec31775aff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  damage: 1
+  speed: 6
+  direction: {x: 0, y: 0}
   lifeTime: 3

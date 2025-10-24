@@ -10,7 +10,8 @@ public class AxeMulti : SkillBase
     {
 
 
-        KnifeController.Instance.decreaseCooldown(0.5f);
+        print("Axe Multi Skill Activated");
+        KnifeController.Instance.decreaseCooldown(0.1f);
 
     }
 

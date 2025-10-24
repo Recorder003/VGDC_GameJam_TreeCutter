@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
-using UnityEditor.U2D.Animation;
+//using UnityEditor.U2D.Animation;
 
 public class PlayerCollides : MonoBehaviour
 {

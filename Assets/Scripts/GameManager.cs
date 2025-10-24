@@ -12,10 +12,13 @@ public class GameManager : MonoBehaviour
     public float gameSpeed = 1f;
     public float musicVolume = 0.5f;
     public float enemyHitFlashDur = 0.2f;
+    public int score = 0;
 
     public static GameManager Instance { get; private set; }
     public GameObject skillSelectionUI;
     public GameObject skillPrefab;
+    public TextMeshProUGUI TimerText;
+    public TextMeshProUGUI ScoreText;
 
     public int skillsToChoose = 3;
     List<Sprite> skillSprites = new List<Sprite>();
@@ -68,9 +71,9 @@ public class GameManager : MonoBehaviour
 
         skills = new List<Skill>();
 
-        skills.Add(new Skill("Axe Multishot", "AxeImage", "Throw more axes", "AxeMulti", 1, ScriptType.OneShot));
+        skills.Add(new Skill("Axe Multishot", "Misc_1", "Throw more axes", "AxeMulti", 1, ScriptType.OneShot));
         //skills.Add(new Skill("Sharper Axe", "AxeImage", "Your axe is sharper...", "SharpAxe", 1, ScriptType.OneShot));
-        skills.Add(new Skill("Axe Multishot TWO", "AxeImage", "Throw even more axes", "AxeMulti", 1, ScriptType.OneShot));
+        skills.Add(new Skill("Axe Multishot TWO", "Misc_1", "Throw even more axes", "AxeMulti", 1, ScriptType.OneShot));
 
 
         Sprite[] Sprites;
@@ -93,6 +96,13 @@ public class GameManager : MonoBehaviour
         print("Test Here");
         print(skillScripts.Count);
 
+    }
+
+    private void Update()
+    {
+        //need to set time to timertext, must respect timescale
+        TimerText.text = "Time: " + Time.timeSinceLevelLoad.ToString("F2");
+        ScoreText.text = "Score: " + score;
     }
 
     public void playerLeveledUp(int newLevel)

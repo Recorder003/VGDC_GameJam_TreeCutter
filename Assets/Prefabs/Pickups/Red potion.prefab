@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 600500922313445258}
   - component: {fileID: 7605835489576446585}
-  - component: {fileID: -8061686125848503462}
   - component: {fileID: 1076512122483161581}
+  - component: {fileID: 3520359816722804803}
   m_Layer: 0
   m_Name: Red potion
   m_TagString: Untagged
@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 1911182079
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7373246977667690877, guid: 9af4d6514070cb04e950291bac72a8f7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e5941a5b26026c4caafdc1d5db971e6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -89,7 +89,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &-8061686125848503462
+--- !u!114 &1076512122483161581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5200540567077761879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e512d431436734a937aad98bac02c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthToRestore: 100
+--- !u!61 &3520359816722804803
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,32 +132,19 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.17113519, y: -0.55007815}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.46875, y: 0.65625}
+    oldSize: {x: 10, y: 10}
     newSize: {x: 0.46875, y: 0.65625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.46875, y: 0.65625}
+  m_Size: {x: 3.8880239, y: 4.841492}
   m_EdgeRadius: 0
---- !u!114 &1076512122483161581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5200540567077761879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67e512d431436734a937aad98bac02c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthToRestore: 100

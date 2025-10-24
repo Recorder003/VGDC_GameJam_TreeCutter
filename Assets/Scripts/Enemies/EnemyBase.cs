@@ -23,6 +23,7 @@ public class EnemyBase : MonoBehaviour
     public string hitSfxName;
     public int difficultyLevel;
     public DropRateManager dropRateManager;
+    public bool outsideGrid = false;
     // could have some sort of unique pathing for certain enemies
 
     private void Awake()
@@ -32,18 +33,7 @@ public class EnemyBase : MonoBehaviour
         dropRateManager = GetComponent<DropRateManager>();
     }
 
-    protected virtual void Start()
-    {
-        //flashDuration = GameManager.Instance.enemyHitFlashDur;
-        //spriteRenderer = GetComponent<SpriteRenderer>();
-        //check if spriterender is null
-    }
 
-    // Update is called once per frame
-    protected virtual void Update()
-    {
-
-    }
 
 
 
@@ -86,6 +76,7 @@ public class EnemyBase : MonoBehaviour
             dropRateManager.itemDestroyed();
 
         }
+        GameManager.Instance.score += difficultyLevel;
         EnemyManager.Instance.EnemyKilled(gameObject);
         Destroy(gameObject);
     }

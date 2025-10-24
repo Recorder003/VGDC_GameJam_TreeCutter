@@ -68,7 +68,7 @@ public class EnemyManager : MonoBehaviour
         }
 
 
-        currentDifficulty = Mathf.FloorToInt(Time.timeSinceLevelLoad / 3f);
+        currentDifficulty = Mathf.FloorToInt(Time.timeSinceLevelLoad / 30f);//increase difficulty every 30 secs
 
 
     }
@@ -89,21 +89,29 @@ public class EnemyManager : MonoBehaviour
 
         foreach (EnemyObj enemy in enemiesSpawned)
         {
+
+            int enemySpeed = enemy.enemyBase.speed;
+
+            if (enemy.outsideGrid)
+            {
+                enemySpeed = enemy.enemyBase.speed * 2;
+            }
+
             if (enemy.enemyBase.movementType == EnemyBase.MovementType.Normal)
             {
                 Cell cellBelow = gridContainer.flowField.getCellFromWorldPos(enemy.obj.transform.position);
                 Vector3 flowDirection = new Vector3(cellBelow.bestDirection.Vector.x, cellBelow.bestDirection.Vector.y);
                 Rigidbody2D enemyRb = enemy.enemyRb; //calling getcomponent a lot, very expensive..
-                enemyRb.linearVelocity = flowDirection.normalized * enemy.enemyBase.speed;
+                enemyRb.linearVelocity = flowDirection.normalized * enemySpeed;
             }
             else if (enemy.enemyBase.movementType == EnemyBase.MovementType.Flying)
             {
-                enemy.obj.transform.position = Vector2.MoveTowards(transform.position, playerPos, enemy.enemyBase.speed * Time.deltaTime); //doesnt work
+                enemy.obj.transform.position = Vector2.MoveTowards(transform.position, playerPos, enemySpeed * Time.deltaTime); //doesnt work
             }
             else if (enemy.enemyBase.movementType == EnemyBase.MovementType.Ghost)
             {
                 Rigidbody2D enemyRb = enemy.enemyRb;
-                enemyRb.linearVelocity = (playerPos - enemy.obj.transform.position).normalized * enemy.enemyBase.speed;
+                enemyRb.linearVelocity = (playerPos - enemy.obj.transform.position).normalized * enemySpeed;
             }
 
 
@@ -196,6 +204,19 @@ public class EnemyManager : MonoBehaviour
                 break;
 
         }
+
+        //scale enemy with difficulty, ignore if difficulty is zero
+        if (currentDifficulty > 0)
+        {
+            EnemyBase enemyBase = enemyInstance.GetComponent<EnemyBase>();
+            float scaleMultiplier = 1f + (currentDifficulty * 0.1f); //10% increase per difficulty level
+            enemyBase.health = Mathf.FloorToInt(enemyBase.health * scaleMultiplier);
+            enemyBase.collideDamage = Mathf.FloorToInt(enemyBase.collideDamage * scaleMultiplier);
+            enemyBase.difficultyLevel = Mathf.FloorToInt(enemyBase.difficultyLevel * scaleMultiplier);
+        }
+        
+
+
 
         enemyInstance.transform.position = spawnPos;
         enemiesSpawned.Add(new EnemyObj(enemyInstance));

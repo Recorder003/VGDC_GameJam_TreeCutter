@@ -82,50 +82,50 @@ public class GridContainer : MonoBehaviour
 
     }
 
-    private void OnDrawGizmos()
-    {
-        if (!displayGrid)
-            return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (!displayGrid)
+    //        return;
 
-        if (flowField == null)
-        {
-            DrawGrid(gridSize, Color.white, cellRadius);
+    //    if (flowField == null)
+    //    {
+    //        DrawGrid(gridSize, Color.white, cellRadius);
 
-        } else
-        {
-            DrawGrid(flowField.gridSize, Color.blue, flowField.cellRadius);
-        }
+    //    } else
+    //    {
+    //        DrawGrid(flowField.gridSize, Color.blue, flowField.cellRadius);
+    //    }
 
 
 
-    }
+    //}
 
     //draws the grid when gizmos drawing enabled
-    private void DrawGrid(Vector2Int gridSize, Color drawColor, float drawCellRadius)
-    {
-        if (Application.isPlaying)
-        {
-            Gizmos.color = drawColor;
-            for (int i = 0; i < gridSize.x; i++)
-            {
-                for (int j = 0; j < gridSize.y; j++)
-                {
-                    Vector3 cellPosition = new Vector3(flowField.cells[i, j].worldPos.x, flowField.cells[i, j].worldPos.y, 0);
+    //private void DrawGrid(Vector2Int gridSize, Color drawColor, float drawCellRadius)
+    //{
+    //    if (Application.isPlaying)
+    //    {
+    //        Gizmos.color = drawColor;
+    //        for (int i = 0; i < gridSize.x; i++)
+    //        {
+    //            for (int j = 0; j < gridSize.y; j++)
+    //            {
+    //                Vector3 cellPosition = new Vector3(flowField.cells[i, j].worldPos.x, flowField.cells[i, j].worldPos.y, 0);
 
-                    //Vector3 cellPosition = new Vector3(drawCellRadius * 2 * i + drawCellRadius, drawCellRadius * 2 * j + drawCellRadius, 0);
-                    Vector3 size = Vector3.one * drawCellRadius * 2;
-                    Gizmos.DrawWireCube(cellPosition, size);
-                    //now draw cell cost
-                    if (flowField != null)
-                    {
-                        Cell cell = flowField.cells[i, j];
-                        GUIStyle style = new GUIStyle();
-                        style.normal.textColor = Color.white;
-                        UnityEditor.Handles.Label(cell.worldPos, cell.bestCost.ToString(), style);
+    //                //Vector3 cellPosition = new Vector3(drawCellRadius * 2 * i + drawCellRadius, drawCellRadius * 2 * j + drawCellRadius, 0);
+    //                Vector3 size = Vector3.one * drawCellRadius * 2;
+    //                Gizmos.DrawWireCube(cellPosition, size);
+    //                //now draw cell cost
+    //                if (flowField != null)
+    //                {
+    //                    Cell cell = flowField.cells[i, j];
+    //                    GUIStyle style = new GUIStyle();
+    //                    style.normal.textColor = Color.white;
+    //                    UnityEditor.Handles.Label(cell.worldPos, cell.bestCost.ToString(), style);
 
-                    }
-                }
-            }
-        }
-    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 }

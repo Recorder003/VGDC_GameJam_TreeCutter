@@ -34,6 +34,9 @@ public class KnifeController : WeaponController
 
     public void decreaseCooldown(float num)
     {
+        //weaponData.CooldownDuration = 0.1f; // testing
+
+
         if (weaponData.CooldownDuration - num >= 0.1f)
         {
             weaponData.CooldownDuration -= num;

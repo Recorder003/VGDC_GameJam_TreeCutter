@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 79edc329b9e42f743a82244090bddca9
+guid: b328c397304828e4bacbc8df9ed0fed4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3794550611322748858
-    second: play_0
+      213: -2294576737316898849
+    second: lumber_jack_female_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,43 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WindowsStoreApps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: play_0
+      name: lumber_jack_female_0
       rect:
         serializedVersion: 2
-        x: 90
-        y: 29
-        width: 674
-        height: 324
+        x: 254
+        y: 73
+        width: 732
+        height: 1296
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: abf32263da3f8a430800000000000000
-      internalID: 3794550611322748858
+      spriteID: fd7f9565d960820e0800000000000000
+      internalID: -2294576737316898849
       vertices: []
       indices: 
       edges: []
@@ -161,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      play_0: 3794550611322748858
+      lumber_jack_female_0: -2294576737316898849
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

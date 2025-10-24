@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PineTree : MonoBehaviour
+public class PineTree : EnemyBase
 {
     private Transform player;
 

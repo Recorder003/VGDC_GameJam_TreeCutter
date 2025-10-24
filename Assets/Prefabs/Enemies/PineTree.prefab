@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1591917170428754555}
   m_Layer: 0
   m_Name: PineTree
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -296,12 +296,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementType: 0
-  health: 10
+  health: 4
   speed: 1
   collideDamage: 2
   spriteRenderer: {fileID: 0}
   hitSfxName: 
-  difficultyLevel: 3
+  difficultyLevel: 2
   dropRateManager: {fileID: 0}
   bulletPrefab: {fileID: 9084441854759100738, guid: 1b7bd6d89b417fb4ebf1318a07ebb2d9, type: 3}
   startShotCooldown: 3

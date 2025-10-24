@@ -150,6 +150,7 @@ public class PlayerStats : MonoBehaviour
 
     public void RestoreHealth(float amount)
     {
+        print("Restoring " + amount + " health to player.");
         //Only heal player if current health is less than max health
         if (currentHealth < characterData.MaxHealth)
         {
@@ -174,6 +175,10 @@ public class PlayerStats : MonoBehaviour
             case "Enemy":
                 TakeDamage(collision.gameObject.GetComponent<EnemyBase>().collideDamage);
                 break;
+            case "EnemyProjectile":
+                TakeDamage(collision.gameObject.GetComponent<EnemyProjectile>().damage);
+                Destroy(collision.gameObject);
+                break;
 
         }
 
@@ -194,6 +199,7 @@ public class PlayerStats : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
             PlayerDies();
         }
         else
@@ -215,6 +221,7 @@ public class PlayerStats : MonoBehaviour
     private void PlayerDies()
     {
         print("Player Died");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
         //bring up death ui
     }
 
