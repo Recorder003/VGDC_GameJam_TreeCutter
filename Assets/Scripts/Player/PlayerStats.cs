@@ -43,6 +43,9 @@ public class PlayerStats : MonoBehaviour
     public List<LevelRange> levelRanges;
     public static PlayerStats Instance { get; private set; }
 
+
+    public HealthBar healthBar;
+
     void Awake()
     {
         //Assign the variables
@@ -69,6 +72,8 @@ public class PlayerStats : MonoBehaviour
         //Initialize the experience cap as the first experience cap increase
         experienceCap = levelRanges[0].experienceCapIncrease;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        healthBar.SetMaxHealth(characterData.MaxHealth);
     }
 
     void Update()
@@ -175,6 +180,8 @@ public class PlayerStats : MonoBehaviour
         print("Player takes " + damage + " damage.");
         print("Player health before damage: " + currentHealth);
         currentHealth -= damage;
+
+        healthBar.SetHealth(currentHealth);
         //start hurt flash animation
 
         if (currentHealth <= 0)
