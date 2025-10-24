@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class GameManager : MonoBehaviour
 
     public int skillsToChoose = 3;
     List<Sprite> skillSprites = new List<Sprite>();
-
+    List<MonoBehaviour> skillScripts = new List<MonoBehaviour>();
+    List<Skill> skillsToDisplay = new List<Skill>();
 
     public enum ScriptType
     {
@@ -74,10 +76,13 @@ public class GameManager : MonoBehaviour
         Sprite[] Sprites;
         Sprites = Resources.LoadAll<Sprite>("SkillSprites");
 
-        //for (int i = 0; i < Sprites.Length; i++)
-        //{
-        //    skillSprites
-        //}
+        MonoBehaviour[] Scripts;
+        Scripts = Resources.LoadAll<MonoBehaviour>("SkillScripts");
+
+        for (int i = 0; i < Sprites.Length; i++)
+        {
+            skillSprites.Add(Sprites[i]);
+        }
 
 
     }
@@ -100,7 +105,9 @@ public class GameManager : MonoBehaviour
             Skill randomSkill = skills[randomSkillIndex];
 
             GameObject skillObj = Instantiate(skillPrefab, skillSelectionUI.transform);
+            skillObj.SetActive(true);
             SetUpSkill(randomSkill, skillObj);
+            skillsToDisplay.Add(randomSkill);
         }
 
     }
@@ -109,8 +116,40 @@ public class GameManager : MonoBehaviour
     {
         skillPrefab.transform.Find("SkillName").GetComponent<TextMeshProUGUI>().text = aSkill.skillName;
         skillPrefab.transform.Find("SkillDescription").GetComponent<TextMeshProUGUI>().text = aSkill.skillDescription;
-        
+        skillPrefab.transform.Find("SkillImage").GetComponent<Image>().sprite = skillSprites.Find(s => s.name == aSkill.skillImageName);
+
+
 
     }
+
+    public void SkillChosen(GameObject skillObj)
+    {
+
+        string skillName = skillObj.GetComponent<TextMeshProUGUI>().text;
+
+        foreach (Skill skill in skillsToDisplay)
+        {
+            if (skillName == skill.skillName)
+            {
+                //skillScripts.Add((MonoBehaviour)System.Activator.CreateInstance(System.Type.GetType(skill.skillScriptName))); //??
+                MonoBehaviour myScript = Instantiate(skillScripts.Find(s => s.name == skill.skillName), gameObject.transform);
+                Destroy(myScript);
+                //should run awake then die
+
+            }
+        }
+
+        skillsToDisplay.Clear();
+        Time.timeScale = 1f;
+        //destroy children in skillui
+
+        for (int i = skillSelectionUI.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(skillSelectionUI.transform.GetChild(i).gameObject);
+        }
+
+
+    }
+
 
 }
