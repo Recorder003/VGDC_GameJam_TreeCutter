@@ -45,6 +45,7 @@ public class PlayerStats : MonoBehaviour
 
 
     public HealthBar healthBar;
+    public ExpBar expBar;
 
     void Awake()
     {
@@ -74,6 +75,8 @@ public class PlayerStats : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         healthBar.SetMaxHealth(characterData.MaxHealth);
+        expBar.SetMaxExp(experienceCap);
+        expBar.SetExp(experience);
     }
 
     void Update()
@@ -92,6 +95,8 @@ public class PlayerStats : MonoBehaviour
     public void IncreaseExperience(int amount)
     {
         experience += amount;
+
+        expBar.SetExp(experience);
 
         LevelUpChecker();
     }
@@ -113,6 +118,9 @@ public class PlayerStats : MonoBehaviour
                 }
             }
             experienceCap += experienceCapIncrease;
+
+            expBar.SetMaxExp(experienceCap);
+            expBar.SetExp(experience);
 
             GameManager.Instance.playerLeveledUp(level);
         }
