@@ -31,13 +31,13 @@ public class EnemyStats : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnCollisionStay2D(Collision2D col)
-    {
-        //Reference the script from the collided collider and deal damage using TakeDamage()
-        if (col.gameObject.CompareTag("Player"))
-        {
-            PlayerStats player=col.gameObject.GetComponent<PlayerStats>();
-            player.TakeDamage(currentDamage); //Make sure to use currentDamage instead of weaponData.damage in case any damage multipliers in the future
-        }
-    }
+    //private void OnCollisionStay2D(Collision2D col)
+    //{
+    //    //Reference the script from the collided collider and deal damage using TakeDamage()
+    //    if (col.gameObject.CompareTag("Player"))
+    //    {
+    //        PlayerStats player=col.gameObject.GetComponent<PlayerStats>();
+    //        player.TakeDamage(currentDamage); //Make sure to use currentDamage instead of weaponData.damage in case any damage multipliers in the future
+    //    }
+    //}
 }
