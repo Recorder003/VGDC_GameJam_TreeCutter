@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     public int skillsToChoose = 3;
     List<Sprite> skillSprites = new List<Sprite>();
-    List<MonoBehaviour> skillScripts = new List<MonoBehaviour>();
+    List<GameObject> skillScripts = new List<GameObject>();
     List<Skill> skillsToDisplay = new List<Skill>();
 
     public enum ScriptType
@@ -69,24 +69,25 @@ public class GameManager : MonoBehaviour
         skills = new List<Skill>();
 
         skills.Add(new Skill("Axe Multishot", "AxeImage", "Throw more axes", "AxeMulti", 1, ScriptType.OneShot));
-        skills.Add(new Skill("Sharper Axe", "AxeImage", "Your axe is sharper...", "SharpAxe", 1, ScriptType.OneShot));
+        //skills.Add(new Skill("Sharper Axe", "AxeImage", "Your axe is sharper...", "SharpAxe", 1, ScriptType.OneShot));
         skills.Add(new Skill("Axe Multishot TWO", "AxeImage", "Throw even more axes", "AxeMulti", 1, ScriptType.OneShot));
 
 
         Sprite[] Sprites;
         Sprites = Resources.LoadAll<Sprite>("SkillSprites");
 
-        MonoBehaviour[] Scripts;
-        Scripts = Resources.LoadAll<MonoBehaviour>("SkillScripts");
+        GameObject[] ScriptObjs;
+        ScriptObjs = Resources.LoadAll<GameObject>("SkillScripts");
 
         for (int i = 0; i < Sprites.Length; i++)
         {
             skillSprites.Add(Sprites[i]);
         }
 
-        for (int i = 0; i < Scripts.Length; i++)
+        for (int i = 0; i < ScriptObjs.Length; i++)
         {
-            skillScripts.Add(Scripts[i]);
+            print("Loaded skill script: " + ScriptObjs[i].name);
+            skillScripts.Add(ScriptObjs[i]);
         }
 
         print("Test Here");
@@ -139,8 +140,9 @@ public class GameManager : MonoBehaviour
             {
                 //skillScripts.Add((MonoBehaviour)System.Activator.CreateInstance(System.Type.GetType(skill.skillScriptName))); //??
                 print("Chosen skill: " + skill.skillName);
-                MonoBehaviour myScript = Instantiate(skillScripts.Find(s => s.name == skill.skillName), gameObject.transform);
-                Destroy(myScript,2f);
+                SkillBase myScript = Instantiate(skillScripts.Find(s => s.name == skill.skillScriptName).GetComponent<SkillBase>(), gameObject.transform);
+                myScript.PerformSkill();
+                //Destroy(myScript,2f);
                 //should run awake then die
 
             }

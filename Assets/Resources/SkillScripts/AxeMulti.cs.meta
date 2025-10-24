@@ -1,2 +1,12 @@
 fileFormatVersion: 2
 guid: 1eaeb0f84c93c17488ab7251d45d1afa
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - KnifeControllerPrefab: {fileID: 4678119721091411705, guid: 8a4554490cb13da49aaccfaa503be813, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

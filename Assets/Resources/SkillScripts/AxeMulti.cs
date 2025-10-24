@@ -1,18 +1,17 @@
 using UnityEngine;
 
-public class AxeMulti : MonoBehaviour
+public class AxeMulti : SkillBase
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    GameObject KnifeControllerPrefab;
-    private void Awake()
+    public GameObject KnifeControllerPrefab;
+    
+    public override void PerformSkill()
     {
-        Instantiate(KnifeControllerPrefab, PlayerStats.Instance.transform);
+
+
+        KnifeController.Instance.decreaseCooldown(0.5f);
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
